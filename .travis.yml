@@ -1,0 +1,6 @@
+os: osx
+language: cpp
+script:
+- brew install qt
+- qmake pouet.pro
+- make
