@@ -1,6 +1,9 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QDebug>
+#include <QFileInfo>
+
+#include "sndfile.hh"
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +25,7 @@ int main(int argc, char *argv[])
 	parser.addOptions({ verboseOption, outputOption });
 
 	if (!parser.parse(a.arguments())) {
-		out << parser.errorText();
+		out << parser.errorText() << endl;
 		return -1;
 	}
 
@@ -31,7 +34,7 @@ int main(int argc, char *argv[])
 	QStringList args = parser.positionalArguments();
 
 	if (args.empty()) {
-		out << "Please provide some arguments!";
+		out << "Please provide some arguments!" << endl;
 		parser.showHelp(-1);
 	}
 
@@ -44,9 +47,15 @@ int main(int argc, char *argv[])
 
 	foreach(QString arg, args) {
 		if (verbose) {
-			out << "A verbose log";
+			out << "A verbose log" << endl;
 		}
-		out << arg;
+		out << arg << endl;
+		QFileInfo info(arg);
+
+		if (info.suffix().toLower() == "wav") {
+			SndfileHandle handle(arg.toStdString().c_str());
+			out << "Sample rate:" << handle.samplerate() << endl;
+		}
 	}
 
 	return 0;
