@@ -1,7 +1,7 @@
 os: osx
 language: cpp
 script:
-- brew install qt
+- brew install qt libsndfile
 - export PATH="/usr/local/opt/qt/bin:$PATH"
 - qmake pouet.pro
 - make
