@@ -6,6 +6,9 @@ int main(int argc, char *argv[])
 {
 	QCoreApplication a(argc, argv);
 	QCommandLineParser parser;
+	QDebug out = qDebug();
+
+	out.noquote();
 
 	parser.setApplicationDescription("pouet");
 
@@ -19,7 +22,7 @@ int main(int argc, char *argv[])
 	parser.addOptions({ verboseOption, outputOption });
 
 	if (!parser.parse(a.arguments())) {
-		qDebug() << parser.errorText();
+		out << parser.errorText();
 		return -1;
 	}
 
@@ -28,7 +31,7 @@ int main(int argc, char *argv[])
 	QStringList args = parser.positionalArguments();
 
 	if (args.empty()) {
-		qDebug() << "Please provide some arguments!";
+		out << "Please provide some arguments!";
 		parser.showHelp(-1);
 	}
 
@@ -41,9 +44,9 @@ int main(int argc, char *argv[])
 
 	foreach(QString arg, args) {
 		if (verbose) {
-			qDebug() << "A verbose log";
+			out << "A verbose log";
 		}
-		qDebug() << arg;
+		out << arg;
 	}
 
 	return 0;
